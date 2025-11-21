@@ -152,6 +152,10 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   bool falsaAlarma = false;
   bool cancelado = false;
 
+  int unidadesBomberos = 0;
+  int unidadesInstituciones = 0;
+  int asistentesCantidad = 1;
+
   Future<void> selectedTime(
       BuildContext context, TextEditingController controller) async {
     final TimeOfDay? newTime = await showTimePicker(
@@ -607,9 +611,10 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
-              // SECCIÓN: Personal en Servicio
+              // SECCIÓN: Personal en servicio
               Text("Personal en servicio",
                   style: Theme.of(context).textTheme.titleLarge),
+
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(labelText: "Operador"),
                 items: operadorOptions
@@ -621,11 +626,14 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 onChanged: (String? value) => setState(() => operador = value),
                 validator: (value) => value == null ? "Campo requerido" : null,
               ),
+
               TextFormField(
                 controller: especificaController,
                 decoration: InputDecoration(
                     labelText: "Especifique (en caso de 'Otro')"),
               ),
+
+// --- Jefe de servicio ---
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(labelText: "Jefe de servicio"),
                 items: jefeServicioOptions
@@ -638,66 +646,121 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     setState(() => jefeServicio = value),
                 validator: (value) => value == null ? "Campo requerido" : null,
               ),
+
               TextFormField(
                 controller: especificaController,
                 decoration: InputDecoration(
                     labelText: "Especifique (en caso de 'Otro')"),
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "Asistente 1"),
+
+              SizedBox(height: 20),
+
+// --- Selección de asistentes ---
+              Text("Asistentes",
+                  style: Theme.of(context).textTheme.titleMedium),
+
+              DropdownButtonFormField<int>(
+                decoration: InputDecoration(labelText: "Número de asistentes"),
+                value: asistentesCantidad,
+                items: [1, 2, 3]
+                    .map((n) => DropdownMenuItem(
+                          value: n,
+                          child: Text("$n"),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    asistentesCantidad = value!;
+                  });
+                },
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "Asistente 2"),
-              ),
-              TextFormField(
-                decoration: InputDecoration(labelText: "Asistente 3"),
-              ),
+
+              for (int i = 1; i <= asistentesCantidad; i++) ...[
+                TextFormField(
+                  decoration: InputDecoration(labelText: "Asistente $i"),
+                ),
+              ],
+
               SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Unidades de Bomberos J.R. de Apoyo
               Text("Unidades de Bomberos J.R. de Apoyo",
                   style: Theme.of(context).textTheme.titleLarge),
-              for (int i = 1; i <= 4; i++) ...[
-                Text("Unidad $i",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "Unidad"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "Encargado"),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "No. de elementos"),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-                SizedBox(height: 10),
-              ],
+
+              DropdownButtonFormField<int>(
+                decoration: InputDecoration(labelText: "Número de unidades"),
+                value: unidadesBomberos == 0 ? null : unidadesBomberos,
+                items: [1, 2, 3, 4]
+                    .map((n) => DropdownMenuItem(value: n, child: Text("$n")))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    unidadesBomberos = value!;
+                  });
+                },
+              ),
+
+              if (unidadesBomberos > 0)
+                for (int i = 1; i <= unidadesBomberos; i++) ...[
+                  SizedBox(height: 10),
+                  Text("Unidad $i",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Unidad"),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Encargado"),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "No. de elementos"),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+                ],
+
               SizedBox(height: 20),
 
-              // SECCIÓN: Unidades de Otras Instituciones
+// SECCIÓN: Unidades de Otras Instituciones
               Text("Unidades de otras instituciones",
                   style: Theme.of(context).textTheme.titleLarge),
-              for (int i = 1; i <= 3; i++) ...[
-                Text("Institución $i",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "Institución"),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "Unidad"),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "Encargado"),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(labelText: "No. de elementos"),
-                ),
-                SizedBox(height: 10),
-              ],
+
+              DropdownButtonFormField<int>(
+                decoration:
+                    InputDecoration(labelText: "Número de instituciones"),
+                value:
+                    unidadesInstituciones == 0 ? null : unidadesInstituciones,
+                items: [1, 2, 3]
+                    .map((n) => DropdownMenuItem(value: n, child: Text("$n")))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    unidadesInstituciones = value!;
+                  });
+                },
+              ),
+
+              if (unidadesInstituciones > 0)
+                for (int i = 1; i <= unidadesInstituciones; i++) ...[
+                  SizedBox(height: 10),
+                  Text("Institución $i",
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Institución"),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Unidad"),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "Encargado"),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "No. de elementos"),
+                  ),
+                ],
+
               SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████

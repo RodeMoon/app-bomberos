@@ -6,10 +6,9 @@ import 'package:proyecto_integrador_bomberos/screens/login_screen.dart';
 import 'package:proyecto_integrador_bomberos/screens/form_screen.dart';
 import 'package:proyecto_integrador_bomberos/utils/theme.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); 
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
