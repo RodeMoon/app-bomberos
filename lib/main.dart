@@ -6,6 +6,7 @@ import 'package:proyecto_integrador_bomberos/screens/login_screen.dart';
 import 'package:proyecto_integrador_bomberos/screens/form_screen.dart';
 import 'package:proyecto_integrador_bomberos/utils/theme.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -15,7 +16,7 @@ void main() async {
 /*void main() async {
   WidgetsFlutterBinding.ensureInitialized();
    await Firebase.initializeApp(
-    options: FirebaseOptions(
+    options: const FirebaseOptions(
       apiKey: "AIzaSyD4XWhH-eThiSdGHILsxaMrEbAlbt1HHVM",
       appId: "1:414432687968:android:c514161e8e421117911005",
       messagingSenderId: "414432687968",
@@ -23,7 +24,7 @@ void main() async {
       databaseURL: "https://bomberos-1866b-default-rtdb.firebaseio.com/",
     ),
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }*/
 
 class MyApp extends StatelessWidget {

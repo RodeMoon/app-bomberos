@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_bomberos/screens/form_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:proyecto_integrador_bomberos/services/auth_service.dart';
 
 import 'detailReport_screen.dart';
 
@@ -234,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               )),
           ListTile(
             onTap: () {
-              //AuthService().signout(context: context);
+              AuthService().signout(context: context);
             },
             title: const Text("Cerrar sesión"),
             //subtitle: const Text("Tema / Fuente"),

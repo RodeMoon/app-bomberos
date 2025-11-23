@@ -63,6 +63,45 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   // Controladores observaciones
   final TextEditingController observacionesController = TextEditingController();
 
+  //dispose para controladores
+  @override
+  void dispose() {
+    destinoController.dispose();
+    coloniaController.dispose();
+    comunidadController.dispose();
+    ciudadController.dispose();
+    carreteraController.dispose();
+    kmController.dispose();
+    razonSocialController.dispose();
+    descripcionLugarController.dispose();
+    coordenadasNController.dispose();
+    coordenadasWController.dispose();
+    reportanteController.dispose();
+    unidadAtiendeController.dispose();
+    kmSalidaController.dispose();
+    kmLlegadaController.dispose();
+    hrReporteController.dispose();
+    hrSalidaBaseController.dispose();
+    hrArriboController.dispose();
+    hrSalidaEscenaController.dispose();
+    hrUnidadDisponibleController.dispose();
+    hrLlegadaBaseController.dispose();
+    especificaController.dispose();
+    descripcionServicioController.dispose();
+    folioAnoController.dispose();
+    folioC4Controller.dispose();
+    elaboraController.dispose();
+    accionesController.dispose();
+    nombreAfectadoController.dispose();
+    funcionController.dispose();
+    direccionController.dispose();
+    telefonoController.dispose();
+    materialController.dispose();
+    observacionesController.dispose();
+
+    super.dispose();
+  }
+
   // Opciones Dropdowns
   final List<String> guardiaOptions = [
     "Guardia \"A\"",
@@ -182,9 +221,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Nuevo reporte")),
+      appBar: AppBar(title: const Text("Nuevo reporte")),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -209,7 +248,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     ? "Selecciona la fecha del reporte"
                     : "Fecha: ${fechaReporte!.toLocal().toString().split(' ')[0]}"),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Ubicación
@@ -217,8 +256,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
 // Botón para abrir el mapa
               ElevatedButton.icon(
-                icon: Icon(Icons.map),
-                label: Text("Seleccionar ubicación en el mapa"),
+                icon: const Icon(Icons.map),
+                label: const Text("Seleccionar ubicación en el mapa"),
                 onPressed: () async {
                   final resultado = await Navigator.push(
                     context,
@@ -239,12 +278,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
 // CALLE / DESTINO
               TextFormField(
                 controller: destinoController,
-                decoration: InputDecoration(labelText: "Destino / Calle"),
+                decoration: const InputDecoration(labelText: "Destino / Calle"),
                 readOnly: true,
                 validator: (value) =>
                     value!.isEmpty ? "Selecciona una ubicación" : null,
@@ -253,7 +292,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 // COLONIA
               TextFormField(
                 controller: coloniaController,
-                decoration: InputDecoration(labelText: "Colonia"),
+                decoration: const InputDecoration(labelText: "Colonia"),
                 readOnly: true,
                 validator: (value) =>
                     value!.isEmpty ? "Selecciona una ubicación" : null,
@@ -265,17 +304,17 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: comunidadController,
-                      decoration: InputDecoration(labelText: "Comunidad"),
+                      decoration: const InputDecoration(labelText: "Comunidad"),
                       readOnly: true,
                       validator: (value) =>
                           value!.isEmpty ? "Selecciona una ubicación" : null,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
                       controller: TextEditingController(text: ciudad),
-                      decoration: InputDecoration(labelText: "Ciudad"),
+                      decoration: const InputDecoration(labelText: "Ciudad"),
                       readOnly: true,
                       validator: (value) =>
                           value!.isEmpty ? "Selecciona una ubicación" : null,
@@ -283,25 +322,23 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   ),
                 ],
               ),
-
-// CARRETERA Y KM (estos sí siguen siendo editables)
               Row(
                 children: [
                   Expanded(
                     child: TextFormField(
                       controller: carreteraController,
-                      decoration:
-                          InputDecoration(labelText: "Carretera / Camino"),
+                      decoration: const InputDecoration(
+                          labelText: "Carretera / Camino"),
                       validator: (value) =>
                           value!.isEmpty ? "Campo requerido" : null,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
                       controller: kmController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(labelText: "Kilómetro"),
+                      decoration: const InputDecoration(labelText: "Kilómetro"),
                       validator: (value) =>
                           value!.isEmpty ? "Campo requerido" : null,
                     ),
@@ -309,7 +346,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 ],
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Información del lugar
@@ -317,13 +354,14 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   style: Theme.of(context).textTheme.titleLarge),
               TextFormField(
                 controller: razonSocialController,
-                decoration:
-                    InputDecoration(labelText: "Razón social/Giro comercial"),
+                decoration: const InputDecoration(
+                    labelText: "Razón social/Giro comercial"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: descripcionLugarController,
-                decoration: InputDecoration(labelText: "Descripción del lugar"),
+                decoration:
+                    const InputDecoration(labelText: "Descripción del lugar"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               // Coordenadas
@@ -332,34 +370,45 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: coordenadasNController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(labelText: "Coordenadas N"),
-                      validator: (value) =>
-                          value!.isEmpty ? "Campo requerido" : null,
+                      keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true, signed: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[-0-9.]')),
+                      ],
+                      decoration:
+                          const InputDecoration(labelText: "Coordenadas N"),
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Selecciona una ubicación"
+                          : null,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
                       controller: coordenadasWController,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(labelText: "Coordenadas W"),
-                      validator: (value) =>
-                          value!.isEmpty ? "Campo requerido" : null,
+                      keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true, signed: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[-0-9.]')),
+                        // opcional: puedes añadir lógica para evitar más de un punto
+                      ],
+                      decoration:
+                          const InputDecoration(labelText: "Coordenadas W"),
+                      validator: (value) => value == null || value.isEmpty
+                          ? "Selecciona una ubicación"
+                          : null,
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Datos del Reporte
               Text("Datos del reporte",
                   style: Theme.of(context).textTheme.titleLarge),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Guardia"),
+                decoration: const InputDecoration(labelText: "Guardia"),
                 items: guardiaOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -370,7 +419,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 validator: (value) => value == null ? "Campo requerido" : null,
               ),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Solicitado por"),
+                decoration: const InputDecoration(labelText: "Solicitado por"),
                 items: solicitadoPorOptions
                     .map((option) => DropdownMenuItem(
                           value: option,
@@ -383,11 +432,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               ),
               TextFormField(
                 controller: reportanteController,
-                decoration: InputDecoration(labelText: "Nombre del reportante"),
+                decoration:
+                    const InputDecoration(labelText: "Nombre del reportante"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Medio"),
+                decoration: const InputDecoration(labelText: "Medio"),
                 items: medioOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -398,7 +448,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 validator: (value) => value == null ? "Campo requerido" : null,
               ),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Tipo de llamada"),
+                decoration: const InputDecoration(labelText: "Tipo de llamada"),
                 items: tipoLlamadaOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -409,14 +459,15 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     setState(() => tipoLlamada = value),
                 validator: (value) => value == null ? "Campo requerido" : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Datos de la unidad y horarios
               Text("Datos de unidad y horarios",
                   style: Theme.of(context).textTheme.titleLarge),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Unidad que atiende"),
+                decoration:
+                    const InputDecoration(labelText: "Unidad que atiende"),
                 items: unidadOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -433,18 +484,20 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       controller: kmSalidaController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(labelText: "Km de salida"),
+                      decoration:
+                          const InputDecoration(labelText: "Km de salida"),
                       validator: (value) =>
                           value!.isEmpty ? "Campo requerido" : null,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
                       controller: kmLlegadaController,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: InputDecoration(labelText: "Km de llegada"),
+                      decoration:
+                          const InputDecoration(labelText: "Km de llegada"),
                       validator: (value) =>
                           value!.isEmpty ? "Campo requerido" : null,
                     ),
@@ -455,49 +508,54 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 controller: hrReporteController,
                 readOnly: true,
                 onTap: () => selectedTime(context, hrReporteController),
-                decoration: InputDecoration(labelText: "Hora de reporte"),
+                decoration: const InputDecoration(labelText: "Hora de reporte"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: hrSalidaBaseController,
                 onTap: () => selectedTime(context, hrSalidaBaseController),
-                decoration: InputDecoration(labelText: "Hora de salida base"),
+                decoration:
+                    const InputDecoration(labelText: "Hora de salida base"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: hrArriboController,
                 onTap: () => selectedTime(context, hrArriboController),
-                decoration: InputDecoration(labelText: "Hora de arribo escena"),
+                decoration:
+                    const InputDecoration(labelText: "Hora de arribo escena"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: hrSalidaEscenaController,
                 onTap: () => selectedTime(context, hrSalidaEscenaController),
-                decoration: InputDecoration(labelText: "Hora de salida escena"),
+                decoration:
+                    const InputDecoration(labelText: "Hora de salida escena"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: hrUnidadDisponibleController,
                 onTap: () =>
                     selectedTime(context, hrUnidadDisponibleController),
-                decoration:
-                    InputDecoration(labelText: "Hora de unidad disponible"),
+                decoration: const InputDecoration(
+                    labelText: "Hora de unidad disponible"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: hrLlegadaBaseController,
                 onTap: () => selectedTime(context, hrLlegadaBaseController),
-                decoration: InputDecoration(labelText: "Hora de llegada base"),
+                decoration:
+                    const InputDecoration(labelText: "Hora de llegada base"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Tipo de Servicio
               Text("Tipo de servicio",
                   style: Theme.of(context).textTheme.titleLarge),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Tipo de servicio"),
+                decoration:
+                    const InputDecoration(labelText: "Tipo de servicio"),
                 items: tipoServicioOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -510,14 +568,14 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               ),
               TextFormField(
                 controller: especificaController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "Especifique (en caso de 'Otro')"),
               ),
               Row(
                 children: [
                   Expanded(
                     child: CheckboxListTile(
-                      title: Text("Falsa alarma"),
+                      title: const Text("Falsa alarma"),
                       value: falsaAlarma,
                       onChanged: (value) {
                         setState(() {
@@ -529,7 +587,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   ),
                   Expanded(
                     child: CheckboxListTile(
-                      title: Text("Cancelado"),
+                      title: const Text("Cancelado"),
                       value: cancelado,
                       onChanged: (value) {
                         setState(() {
@@ -543,12 +601,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               ),
               TextFormField(
                 controller: descripcionServicioController,
-                decoration:
-                    InputDecoration(labelText: "Descripción del servicio"),
+                decoration: const InputDecoration(
+                    labelText: "Descripción del servicio"),
                 maxLines: 3,
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Reporte de Actividades
@@ -558,21 +616,21 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 controller: folioAnoController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(labelText: "Folio del año"),
+                decoration: const InputDecoration(labelText: "Folio del año"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: folioC4Controller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "Folio de C4 o NP (NP si no proporcionó Folio)"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
               TextFormField(
                 controller: elaboraController,
-                decoration: InputDecoration(labelText: "Elabora"),
+                decoration: const InputDecoration(labelText: "Elabora"),
                 validator: (value) => value!.isEmpty ? "Campo requerido" : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Información Complementaria
@@ -580,35 +638,37 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   style: Theme.of(context).textTheme.titleLarge),
               TextFormField(
                 controller: accionesController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText:
                         "Acciones en el servicio, material involucrado/área afectada"),
               ),
               TextFormField(
                 controller: nombreAfectadoController,
-                decoration: InputDecoration(labelText: "Nombre del afectado"),
+                decoration:
+                    const InputDecoration(labelText: "Nombre del afectado"),
               ),
               TextFormField(
                 controller: funcionController,
-                decoration: InputDecoration(labelText: "Función que desempeña"),
+                decoration:
+                    const InputDecoration(labelText: "Función que desempeña"),
               ),
               TextFormField(
                 controller: direccionController,
-                decoration: InputDecoration(labelText: "Dirección"),
+                decoration: const InputDecoration(labelText: "Dirección"),
               ),
               TextFormField(
                 controller: telefonoController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: InputDecoration(labelText: "Teléfono"),
+                decoration: const InputDecoration(labelText: "Teléfono"),
               ),
               TextFormField(
                 controller: materialController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "Material involucrado y daños ocasionados"),
                 maxLines: 2,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Personal en servicio
@@ -616,7 +676,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   style: Theme.of(context).textTheme.titleLarge),
 
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Operador"),
+                decoration: const InputDecoration(labelText: "Operador"),
                 items: operadorOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -629,13 +689,14 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
               TextFormField(
                 controller: especificaController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "Especifique (en caso de 'Otro')"),
               ),
 
 // --- Jefe de servicio ---
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: "Jefe de servicio"),
+                decoration:
+                    const InputDecoration(labelText: "Jefe de servicio"),
                 items: jefeServicioOptions
                     .map((option) => DropdownMenuItem<String>(
                           value: option,
@@ -649,19 +710,20 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
               TextFormField(
                 controller: especificaController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     labelText: "Especifique (en caso de 'Otro')"),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 // --- Selección de asistentes ---
               Text("Asistentes",
                   style: Theme.of(context).textTheme.titleMedium),
 
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: "Número de asistentes"),
-                value: asistentesCantidad,
+                decoration:
+                    const InputDecoration(labelText: "Número de asistentes"),
+                initialValue: asistentesCantidad,
                 items: [1, 2, 3]
                     .map((n) => DropdownMenuItem(
                           value: n,
@@ -681,7 +743,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 ),
               ],
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Unidades de Bomberos J.R. de Apoyo
@@ -689,8 +751,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   style: Theme.of(context).textTheme.titleLarge),
 
               DropdownButtonFormField<int>(
-                decoration: InputDecoration(labelText: "Número de unidades"),
-                value: unidadesBomberos == 0 ? null : unidadesBomberos,
+                decoration:
+                    const InputDecoration(labelText: "Número de unidades"),
+                initialValue: unidadesBomberos == 0 ? null : unidadesBomberos,
                 items: [1, 2, 3, 4]
                     .map((n) => DropdownMenuItem(value: n, child: Text("$n")))
                     .toList(),
@@ -703,25 +766,26 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
               if (unidadesBomberos > 0)
                 for (int i = 1; i <= unidadesBomberos; i++) ...[
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text("Unidad $i",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "Unidad"),
+                    decoration: const InputDecoration(labelText: "Unidad"),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "Encargado"),
+                    decoration: const InputDecoration(labelText: "Encargado"),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "No. de elementos"),
+                    decoration:
+                        const InputDecoration(labelText: "No. de elementos"),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   ),
                 ],
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 // SECCIÓN: Unidades de Otras Instituciones
               Text("Unidades de otras instituciones",
@@ -729,8 +793,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
               DropdownButtonFormField<int>(
                 decoration:
-                    InputDecoration(labelText: "Número de instituciones"),
-                value:
+                    const InputDecoration(labelText: "Número de instituciones"),
+                initialValue:
                     unidadesInstituciones == 0 ? null : unidadesInstituciones,
                 items: [1, 2, 3]
                     .map((n) => DropdownMenuItem(value: n, child: Text("$n")))
@@ -744,24 +808,25 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
               if (unidadesInstituciones > 0)
                 for (int i = 1; i <= unidadesInstituciones; i++) ...[
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text("Institución $i",
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "Institución"),
+                    decoration: const InputDecoration(labelText: "Institución"),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "Unidad"),
+                    decoration: const InputDecoration(labelText: "Unidad"),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "Encargado"),
+                    decoration: const InputDecoration(labelText: "Encargado"),
                   ),
                   TextFormField(
-                    decoration: InputDecoration(labelText: "No. de elementos"),
+                    decoration:
+                        const InputDecoration(labelText: "No. de elementos"),
                   ),
                 ],
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
 //████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
               // SECCIÓN: Observaciones y Firma
@@ -769,10 +834,10 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   style: Theme.of(context).textTheme.titleLarge),
               TextFormField(
                 controller: observacionesController,
-                decoration: InputDecoration(labelText: "Observaciones"),
+                decoration: const InputDecoration(labelText: "Observaciones"),
                 maxLines: 3,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Botón Guardar Reporte
               Center(
@@ -842,7 +907,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             .add(reporteData);
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Reporte guardado con éxito")),
+                          const SnackBar(
+                              content: Text("Reporte guardado con éxito")),
                         );
                         Navigator.pop(context);
                       } catch (e) {
@@ -852,7 +918,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       }
                     }
                   },
-                  child: Text("Guardar reporte"),
+                  child: const Text("Guardar reporte"),
                 ),
               ),
             ],
