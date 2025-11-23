@@ -234,7 +234,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 height: 2,
               )),
           ListTile(
-            onTap: () {
+            onTap: () async {
+              Navigator.of(context).pop(); // Cierra el Drawer primero
+              await Future.delayed(const Duration(milliseconds: 200));
               AuthService().signout(context: context);
             },
             title: const Text("Cerrar sesión"),

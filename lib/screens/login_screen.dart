@@ -57,105 +57,115 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Fondo con GIF
+          // Fondo
           Image.asset(
-            'assets/background.gif', // GIF
+            'assets/background.gif',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
           ),
+
           SafeArea(
-            child: Center(
-              child: Column(
-                children: [
-                  const SizedBox(height: 30),
-                  Image.asset(
-                    "assets/fireman_hat.png",
-                    width: 200,
-                  ),
-                  const SizedBox(height: 50),
-                  const Text('¡Bienvenido!',
-                      style: TextStyle(
-                        fontFamily: 'NexaDemo',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 32,
-                      )),
-                  const SizedBox(height: 25),
-                  MyTextField(
-                    controller: txtUserController,
-                    obscureText: false,
-                    hintText: 'Correo electrónico',
-                  ),
-                  const SizedBox(height: 10),
-                  MyTextField(
-                    controller: txtpWDController,
-                    hintText: 'Contraseña',
-                    obscureText: true,
-                  ),
-                  const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          '¿Olvidó su contraseña?',
-                          style: TextStyle(
-                            fontFamily: 'NexaDemo',
-                            fontWeight: FontWeight.w300,
-                            fontSize: 15,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 75),
-                  MyButton(onTap: signupUser),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'O continuar con',
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),                
-                  // google sign in
-                 Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            child: SingleChildScrollView(
+              // 👈🏻 Permite hacer scroll
+              physics: const BouncingScrollPhysics(),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
                     children: [
-                      // google button
-                      SquareTile(
-                          onTap: () => AuthService().signInWithGoogle(context),
-                          imagePath: 'assets/google.png'),
+                      const SizedBox(height: 30),
+                      Image.asset(
+                        "assets/fireman_hat.png",
+                        width: 200,
+                      ),
+                      const SizedBox(height: 50),
+                      const Text(
+                        '¡Bienvenido!',
+                        style: TextStyle(
+                          fontFamily: 'NexaDemo',
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 32,
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      MyTextField(
+                        controller: txtUserController,
+                        obscureText: false,
+                        hintText: 'Correo electrónico',
+                      ),
+                      const SizedBox(height: 10),
+                      MyTextField(
+                        controller: txtpWDController,
+                        hintText: 'Contraseña',
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '¿Olvidó su contraseña?',
+                              style: TextStyle(
+                                fontFamily: 'NexaDemo',
+                                fontWeight: FontWeight.w300,
+                                fontSize: 15,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 75),
+                      MyButton(onTap: signupUser),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10.0),
+                            child: Text(
+                              'O continuar con',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              thickness: 0.5,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SquareTile(
+                            onTap: () =>
+                                AuthService().signInWithGoogle(context),
+                            imagePath: 'assets/google.png',
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
         ],
       ),
+
     );
   }
 }

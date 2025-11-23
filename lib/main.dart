@@ -13,20 +13,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-/*void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-   await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyD4XWhH-eThiSdGHILsxaMrEbAlbt1HHVM",
-      appId: "1:414432687968:android:c514161e8e421117911005",
-      messagingSenderId: "414432687968",
-      projectId: "bomberos-1866b",
-      databaseURL: "https://bomberos-1866b-default-rtdb.firebaseio.com/",
-    ),
-  );
-  runApp(const MyApp());
-}*/
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
