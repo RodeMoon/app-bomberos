@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapaSeleccionScreen extends StatefulWidget {
+  const MapaSeleccionScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MapaSeleccionScreenState createState() => _MapaSeleccionScreenState();
 }
 
 class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
   LatLng? selectedLatLng;
+  GoogleMapController? mapController;
 
   String calle = "";
   String colonia = "";
@@ -16,8 +21,23 @@ class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
   String ciudad = "";
   String direccionCompleta = "Toca en el mapa para seleccionar";
 
-  // Método para obtener la dirección al tocar el mapa
-  Future<void> _obtenerDireccionDesdeCoordenadas(LatLng pos) async {
+  Future<LatLng?> _getCurrentLocation() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
+      return null;
+    }
+
+    Position pos = await Geolocator.getCurrentPosition();
+    return LatLng(pos.latitude, pos.longitude);
+  }
+
+  Future<void> _getPlaceMarkFromCoordinates(LatLng pos) async {
     try {
       List<Placemark> places =
           await placemarkFromCoordinates(pos.latitude, pos.longitude);
@@ -31,61 +51,74 @@ class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
           comunidad = p.locality ?? "";
           ciudad = p.administrativeArea ?? "";
 
-          direccionCompleta =
-              "$calle, $colonia, $comunidad, $ciudad"; // texto mostrado abajo
+          direccionCompleta = "$calle, $colonia, $comunidad, $ciudad";
         });
       }
     } catch (e) {
-      print("Error obteniendo dirección: $e");
       setState(() {
         direccionCompleta = "No se pudo obtener la dirección";
       });
     }
   }
 
+  void _centerActualLocation() async {
+    LatLng? ubicacionActual = await _getCurrentLocation();
+    if (ubicacionActual == null) return;
+
+    mapController?.animateCamera(
+      CameraUpdate.newLatLngZoom(ubicacionActual, 17),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Seleccionar ubicación")),
+      appBar: AppBar(title: const Text("Seleccionar ubicación")),
       body: Stack(
         children: [
           GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(20.523, -100.815),
+            initialCameraPosition: const CameraPosition(
+              target: LatLng(20.523, -100.815), // temporal, se moverá solo
               zoom: 14,
             ),
+            onMapCreated: (controller) {
+              mapController = controller;
+              _centerActualLocation(); // <-- Mover cámara automáticamente
+            },
+            myLocationEnabled: true, // punto azul
+            myLocationButtonEnabled: true,
             onTap: (pos) async {
               setState(() {
                 selectedLatLng = pos;
               });
 
-              await _obtenerDireccionDesdeCoordenadas(pos);
+              await _getPlaceMarkFromCoordinates(pos);
             },
             markers: selectedLatLng == null
                 ? {}
                 : {
                     Marker(
-                      markerId: MarkerId("seleccion"),
+                      markerId: const MarkerId("seleccion"),
                       position: selectedLatLng!,
                     )
                   },
           ),
 
-          // Dirección mostrada arriba del botón
+          // Caja con la dirección
           Positioned(
             left: 0,
             right: 0,
             bottom: 90,
             child: Container(
-              padding: EdgeInsets.all(12),
-              margin: EdgeInsets.symmetric(horizontal: 12),
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.symmetric(horizontal: 12),
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 direccionCompleta,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ),
@@ -109,7 +142,7 @@ class _MapaSeleccionScreenState extends State<MapaSeleccionScreen> {
                     },
                   );
                 },
-          child: Text("Usar esta ubicación"),
+          child: const Text("Usar esta ubicación"),
         ),
       ),
     );
