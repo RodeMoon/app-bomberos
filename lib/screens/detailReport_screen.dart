@@ -32,7 +32,6 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
   Future<void> _generatePdf() async {
     final pdf = pw.Document();
 
-    // Colores
     final baseColor = PdfColor.fromHex('#1565C0');
     final titleStyle = pw.TextStyle(
         fontSize: 22, fontWeight: pw.FontWeight.bold, color: baseColor);
@@ -40,7 +39,6 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
         fontSize: 16, fontWeight: pw.FontWeight.bold, color: baseColor);
     final labelStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold);
 
-    // Función para crear filas de tabla bonitas
     pw.Widget buildRow(String label, dynamic value) {
       return pw.Container(
         padding: const pw.EdgeInsets.symmetric(vertical: 4),
@@ -54,7 +52,6 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
       );
     }
 
-    // Función para crear secciones
     pw.Widget buildSection(String title, List<pw.Widget> children) {
       return pw.Column(
         crossAxisAlignment: pw.CrossAxisAlignment.start,

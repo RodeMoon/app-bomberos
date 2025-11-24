@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_integrador_bomberos/services/auth_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import '../components/my_textfield.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           email: txtUserController.text,
           password: txtpWDController.text,
           context: context);
-    }*/
+    }
 
     void registerUser() async {
       if (txtUserController.text.isEmpty || txtpWDController.text.isEmpty) {
@@ -37,7 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
         return;
       }
-    }
+    }*/
 
     return Scaffold(
       // backgroundColor: Colors.white,
