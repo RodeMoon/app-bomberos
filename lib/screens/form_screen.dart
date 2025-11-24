@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'map_select_screen.dart';
 
 class ReportFormScreen extends StatefulWidget {
+  const ReportFormScreen({super.key});
+
   @override
   _ReportFormScreenState createState() => _ReportFormScreenState();
 }
@@ -261,7 +263,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 onPressed: () async {
                   final resultado = await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => MapaSeleccionScreen()),
+                    MaterialPageRoute(builder: (_) => const MapaSeleccionScreen()),
                   );
 
                   if (resultado != null) {
@@ -723,7 +725,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               DropdownButtonFormField<int>(
                 decoration:
                     const InputDecoration(labelText: "Número de asistentes"),
-                initialValue: asistentesCantidad,
+                value: asistentesCantidad,
                 items: [1, 2, 3]
                     .map((n) => DropdownMenuItem(
                           value: n,
@@ -753,7 +755,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               DropdownButtonFormField<int>(
                 decoration:
                     const InputDecoration(labelText: "Número de unidades"),
-                initialValue: unidadesBomberos == 0 ? null : unidadesBomberos,
+                value: unidadesBomberos == 0 ? null : unidadesBomberos,
                 items: [1, 2, 3, 4]
                     .map((n) => DropdownMenuItem(value: n, child: Text("$n")))
                     .toList(),
@@ -794,7 +796,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               DropdownButtonFormField<int>(
                 decoration:
                     const InputDecoration(labelText: "Número de instituciones"),
-                initialValue:
+                value:
                     unidadesInstituciones == 0 ? null : unidadesInstituciones,
                 items: [1, 2, 3]
                     .map((n) => DropdownMenuItem(value: n, child: Text("$n")))
