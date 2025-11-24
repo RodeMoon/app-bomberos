@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'map_select_screen.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ReportFormScreen extends StatefulWidget {
   const ReportFormScreen({super.key});
@@ -13,6 +16,9 @@ class ReportFormScreen extends StatefulWidget {
 class _ReportFormScreenState extends State<ReportFormScreen> {
   final _formKey = GlobalKey<FormState>();
   DateTime? fechaReporte;
+
+  // Lista dinámica de imágenes
+  List<File> imagenes = [];
 
   // Controladores ubicación e información del lugar
   final TextEditingController destinoController = TextEditingController();
@@ -64,6 +70,54 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
   // Controladores observaciones
   final TextEditingController observacionesController = TextEditingController();
+
+  Future<void> seleccionarImagen() async {
+    final picker = ImagePicker();
+
+    final source = await showDialog<ImageSource>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Agregar imagen"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+            child: const Text("Cámara"),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            child: const Text("Galería"),
+          ),
+        ],
+      ),
+    );
+
+    if (source == null) return;
+
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        imagenes.add(File(pickedFile.path));
+      });
+    }
+  }
+
+  Future<List<String>> subirImagenes(String reporteId) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    List<String> urls = [];
+
+    for (int i = 0; i < imagenes.length; i++) {
+      final file = imagenes[i];
+      final ref = storage.ref().child("reportes/$reporteId/img_$i.jpg");
+
+      await ref.putFile(file);
+      final url = await ref.getDownloadURL();
+
+      urls.add(url);
+    }
+
+    return urls;
+  }
 
   //dispose para controladores
   @override
@@ -841,6 +895,62 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               ),
               const SizedBox(height: 20),
 
+              Text("Imágenes",
+                  style: Theme.of(context).textTheme.titleLarge),
+              // Lista dinámica de imágenes
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [
+                  ...imagenes.map((img) {
+                    return Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.file(
+                            img,
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              imagenes.remove(img);
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.black54,
+                            ),
+                            child: const Icon(Icons.close, color: Colors.white),
+                          ),
+                        )
+                      ],
+                    );
+                  }).toList(),
+
+                  // Botón para agregar más imágenes
+                  GestureDetector(
+                    onTap: seleccionarImagen,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(Icons.add_a_photo, size: 40),
+                    ),
+                  ),
+                ],
+              ),
+
+
               // Botón Guardar Reporte
               Center(
                 child: ElevatedButton(
@@ -903,10 +1013,39 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                         'created_at': FieldValue.serverTimestamp(),
                       };
 
+                      // try {
+                      //   await FirebaseFirestore.instance
+                      //       .collection('reportes')
+                      //       .add(reporteData);
+
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //         content: Text("Reporte guardado con éxito")),
+                      //   );
+                      //   Navigator.pop(context);
+                      // } catch (e) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(content: Text("Error al guardar: $e")),
+                      //   );
+                      // }
+
                       try {
-                        await FirebaseFirestore.instance
+                        // 1️⃣ Crear documento vacío para obtener ID
+                        final docRef = FirebaseFirestore.instance
                             .collection('reportes')
-                            .add(reporteData);
+                            .doc();
+
+                        final reporteId = docRef.id;
+
+                        // 2️⃣ Subir imágenes usando ese ID
+                        List<String> imagenesUrls =
+                            await subirImagenes(reporteId);
+
+                        // 3️⃣ Agregar URLs al mapa de datos
+                        reporteData['imagenes'] = imagenesUrls;
+
+                        // 4️⃣ Guardar documento completo
+                        await docRef.set(reporteData);
 
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
