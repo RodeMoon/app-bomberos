@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:proyecto_integrador_bomberos/screens/form_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,8 +62,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         title: Text(
           "Reportes de incendios",
-          style: TextStyle(
-              fontFamily: 'NexaDemo',
+          style: GoogleFonts.montserrat(
               fontWeight: FontWeight.bold,
               color: defaultColorScheme.onPrimary),
         ),
@@ -181,7 +181,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ReportFormScreen()),
+            MaterialPageRoute(builder: (context) => const ReportFormScreen()),
           );
         },
         child: const Icon(Icons.add, color: Colors.white, size: 28),

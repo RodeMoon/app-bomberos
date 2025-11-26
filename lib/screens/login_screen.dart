@@ -4,6 +4,7 @@ import 'package:proyecto_integrador_bomberos/components/my_textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proyecto_integrador_bomberos/services/auth_service.dart';
 import '../components/square_tile.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -79,10 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 200,
                       ),
                       const SizedBox(height: 50),
-                      const Text(
+                      Text(
                         '¡Bienvenido!',
-                        style: TextStyle(
-                          fontFamily: 'NexaDemo',
+                        style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           fontSize: 32,
@@ -101,15 +101,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         obscureText: true,
                       ),
                       const SizedBox(height: 10),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
                               '¿Olvidó su contraseña?',
-                              style: TextStyle(
-                                fontFamily: 'NexaDemo',
+                              style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 15,
                                 color: Colors.white,
@@ -151,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           SquareTile(
                             onTap: () =>
                                 AuthService().signInWithGoogle(context),
-                            imagePath: 'assets/google.png',
+                            imagePath: 'assets/gmail.png',
                           ),
                         ],
                       ),

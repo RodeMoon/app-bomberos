@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         "/login": (context) => const LoginScreen(),
         "/home": (context) => const DashboardScreen(),
         "/register": (context) => const RegisterScreen(),
-        "/form": (context) => ReportFormScreen(),
+        "/form": (context) => const ReportFormScreen(),
       },
       debugShowCheckedModeBanner: false,
     );
