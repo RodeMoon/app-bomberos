@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyButton extends StatelessWidget {
   const MyButton({super.key, required this.onTap});
@@ -14,15 +15,13 @@ class MyButton extends StatelessWidget {
         padding: const EdgeInsets.all(25),
         margin: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          //color: const Color(0x91FF4444),
           color: defaultColorScheme.primary,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
             'Iniciar sesión',
-            style: TextStyle(
-              fontFamily: 'NexaTextDemo',
+            style: GoogleFonts.interTight(
               fontWeight: FontWeight.w700,
               fontSize: 17,
               color: Colors.white,

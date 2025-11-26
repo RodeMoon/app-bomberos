@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isEmpty || password.isEmpty) {
       Fluttertoast.showToast(
-        msg: 'Por favor, complete todos los campos.',
+        msg: 'Por favor, complete todos los campos',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black54,
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (!isValidEmail(email)) {
       Fluttertoast.showToast(
-        msg: 'Por favor, ingrese un correo válido.',
+        msg: 'Por favor, ingrese un correo válido',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black54,
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 50),
                       Text(
                         '¡Bienvenido!',
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.interTight(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           fontSize: 32,
@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text(
                               '¿Olvidó su contraseña?',
-                              style: GoogleFonts.montserrat(
+                              style: GoogleFonts.inter(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 15,
                                 color: Colors.white,
@@ -163,7 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-
     );
   }
 }

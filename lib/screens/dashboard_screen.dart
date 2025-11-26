@@ -4,7 +4,6 @@ import 'package:proyecto_integrador_bomberos/screens/form_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:proyecto_integrador_bomberos/services/auth_service.dart';
-
 import 'detailReport_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -62,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         title: Text(
           "Reportes de incendios",
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.interTight(
               fontWeight: FontWeight.bold,
               color: defaultColorScheme.onPrimary),
         ),
@@ -224,7 +223,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               //Navigator.pushNamed(context, "/settings_drawer");
             },
             title: const Text("Acerca de"),
-            subtitle: const Text("Versión 1.0.1"),
+            subtitle: const Text("Versión 1.0.2"),
             leading: const Icon(Icons.info),
             trailing: const Icon(Icons.arrow_forward_ios_sharp),
           ),
