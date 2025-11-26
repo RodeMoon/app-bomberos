@@ -67,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
           SafeArea(
             child: SingleChildScrollView(
-              // 👈🏻 Permite hacer scroll
               physics: const BouncingScrollPhysics(),
               child: Center(
                 child: Padding(
@@ -122,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 75),
                       MyButton(onTap: signupUser),
                       const SizedBox(height: 20),
-                      Row(
+                      const Row(
                         children: [
                           Expanded(
                             child: Divider(
@@ -130,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.grey,
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10.0),
                             child: Text(
                               'O continuar con',

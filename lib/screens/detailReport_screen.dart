@@ -11,10 +11,10 @@ class DetailReportScreen extends StatefulWidget {
   final String docId;
 
   const DetailReportScreen({
-    Key? key,
+    super.key,
     required this.data,
     required this.docId,
-  }) : super(key: key);
+  });
 
   @override
   State<DetailReportScreen> createState() => _DetailReportScreenState();
@@ -78,7 +78,7 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
           pw.Center(
             child: pw.Text(
               "Folio: ${data['folio_ano'] ?? 'N/D'}     Fecha: ${data['fecha_reporte'] ?? 'N/D'}",
-              style: pw.TextStyle(fontSize: 12),
+              style: const pw.TextStyle(fontSize: 12),
             ),
           ),
           pw.SizedBox(height: 20),

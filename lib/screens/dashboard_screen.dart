@@ -210,15 +210,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             leading: const Icon(Icons.person),
             trailing: const Icon(Icons.arrow_forward_ios_sharp),
           ),
-          ListTile(
-            onTap: () {
-              //Navigator.pushNamed(context, "/preferences_drawer");
-            },
-            title: const Text("Preferencias"),
-            subtitle: const Text("Tema / Fuente"),
-            leading: const Icon(Icons.room_preferences),
-            trailing: const Icon(Icons.arrow_forward_ios_sharp),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     //Navigator.pushNamed(context, "/preferences_drawer");
+          //   },
+          //   title: const Text("Preferencias"),
+          //   subtitle: const Text("Tema / Fuente"),
+          //   leading: const Icon(Icons.room_preferences),
+          //   trailing: const Icon(Icons.arrow_forward_ios_sharp),
+          // ),
           ListTile(
             onTap: () {
               //Navigator.pushNamed(context, "/settings_drawer");
