@@ -14,10 +14,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  // Clave para el Scaffold
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  int index = 0;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   User? user;
@@ -27,224 +24,265 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize user and email here
     user = FirebaseAuth.instance.currentUser;
 
-    if (user != null) {
-      name = user!.displayName ?? 'Usuario sin nombre';
-      email = user!.email ?? 'Correo no disponible';
-    } else {
-      name = 'Invitado';
-      email = 'Sin sesión';
-    }
+    name = user?.displayName ?? "Bombero";
+    email = user?.email ?? "correo@institucional.com";
   }
 
   @override
   Widget build(BuildContext context) {
-    //  TEMA PRINCIPAL
-    final defaultColorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
-      backgroundColor: defaultColorScheme.surfaceDim,
       key: _scaffoldKey,
-      // Asigna la clave al Scaffold
+      backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: defaultColorScheme.secondary,
-        leading: IconButton(
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer(); // Abre el drawer
-          },
-          icon: Icon(
-            Icons.menu,
-            color: defaultColorScheme.onPrimary,
+        backgroundColor: const Color(0xFFC62828),
+        elevation: 4,
+        title: Text(
+          "Reportes de incidentes",
+          style: GoogleFonts.montserrat(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
           ),
         ),
-        title: Text(
-          "Reportes de incendios",
-          style: GoogleFonts.interTight(
-              fontWeight: FontWeight.bold,
-              color: defaultColorScheme.onPrimary),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
         ),
-        actions: const [
-          /*GestureDetector(
-            onTap: () {},
-            child: MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.ads_click_sharp,
-                  //color: defaultColorScheme.onPrimary,
-                ),
-              ),
-            ),
-          ),*/
-        ],
       ),
-      drawer: myDrawer(),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('reportes')
-            //.orderBy('fecha', descending: true) // opcional: orden por fecha
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No hay reportes disponibles.'));
-          }
-
-          final reportes = snapshot.data!.docs;
-
-          return ListView.builder(
-            itemCount: reportes.length,
-            itemBuilder: (context, index) {
-              final data = reportes[index].data() as Map<String, dynamic>;
-
-              final fechaStr = data['fecha_reporte'];
-              final descripcion = data['descripcion_servicio'];
-
-              String fechaFormateada = 'Sin título';
-
-              if (fechaStr != null && fechaStr is String) {
-                try {
-                  final fecha = DateTime.parse(fechaStr);
-                  fechaFormateada = '${fecha.day}/${fecha.month}/${fecha.year}';
-                } catch (e) {
-                  fechaFormateada = fechaStr; // Por si acaso ya está formateado
-                }
-              }
-
-              return Column(
-                children: [
-                  ListTile(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailReportScreen(
-                            data: snapshot.data!.docs[index].data()
-                                as Map<String, dynamic>,
-                            docId: snapshot.data!.docs[index].id,
-                          ),
-                        ),
-                      );
-                    },
-                    leading: const Icon(Icons.file_copy),
-                    title: Text(fechaFormateada.toString()),
-                    subtitle: Text(descripcion ?? 'Sin descripción'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        final docId = snapshot.data!.docs[index].id;
-
-                        final confirm = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('¿Eliminar reporte?'),
-                            content:
-                                const Text('Esta acción no se puede deshacer.'),
-                            actions: [
-                              TextButton(
-                                child: const Text('Cancelar'),
-                                onPressed: () => Navigator.pop(context, false),
-                              ),
-                              TextButton(
-                                child: const Text('Eliminar'),
-                                onPressed: () => Navigator.pop(context, true),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        if (confirm == true) {
-                          await FirebaseFirestore.instance
-                              .collection('reportes')
-                              .doc(docId)
-                              .delete();
-                        }
-                      },
-                    ),
-                  ),
-                  const Divider(thickness: 0.5, endIndent: 25, indent: 25),
-                ],
-              );
-            },
-          );
+      drawer: buildInstitutionalDrawer(),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {}); // reconstruye la interfaz
         },
+        child: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection('reportes').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.red));
+            }
+
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(
+                child: Text(
+                  'No hay reportes disponibles.',
+                  style: GoogleFonts.montserrat(fontSize: 16),
+                ),
+              );
+            }
+
+            final reportes = snapshot.data!.docs;
+
+            return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(12),
+              itemCount: reportes.length,
+              itemBuilder: (context, index) {
+                final doc = reportes[index];
+                final data = doc.data() as Map<String, dynamic>;
+
+                final descripcion =
+                    data['descripcion_servicio'] ?? "Sin descripción";
+                final fechaStr = data['fecha_reporte'];
+                String fechaFormateada = "Sin fecha";
+
+                if (fechaStr != null) {
+                  try {
+                    final fecha = DateTime.parse(fechaStr);
+                    fechaFormateada =
+                        "${fecha.day}/${fecha.month}/${fecha.year}";
+                  } catch (_) {}
+                }
+
+                return buildIncidentCard(
+                  context: context,
+                  fecha: fechaFormateada,
+                  descripcion: descripcion,
+                  docId: doc.id,
+                  data: data,
+                );
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: defaultColorScheme.primary,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ReportFormScreen()),
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white, size: 28),
+        backgroundColor: const Color(0xFFC62828),
+        child: const Icon(Icons.add, size: 28, color: Colors.white),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ReportFormScreen()),
+        ),
       ),
     );
   }
 
-  Widget myDrawer() {
+  Widget buildIncidentCard({
+    required BuildContext context,
+    required String fecha,
+    required String descripcion,
+    required String docId,
+    required Map<String, dynamic> data,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => DetailReportScreen(data: data, docId: docId),
+          ),
+        );
+      },
+      child: Card(
+        elevation: 3,
+        shadowColor: Colors.black26,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        margin: const EdgeInsets.only(bottom: 14),
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFCDD2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(Icons.fire_truck,
+                    color: Color(0xFFC62828), size: 30),
+              ),
+              const SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      fecha,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      descripcion,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.montserrat(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () => confirmDelete(context, docId),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildInstitutionalDrawer() {
     return Drawer(
+      backgroundColor: const Color(0xFFF2F2F2),
       child: ListView(
         children: [
-          UserAccountsDrawerHeader(
-            currentAccountPicture: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                //child: selectedImage != null ? Image.file(selectedImage!) : const Image(image: AssetImage("assets/pfp.jpg"))),
-                child: const Image(image: AssetImage("assets/pfp.jpg"))),
-            accountName: Text(name ?? "nouser"),
-            accountEmail: Text(email ?? "noemail"),
+          Container(
+            color: const Color(0xFFC62828),
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 45,
+                  backgroundImage: const AssetImage("assets/pfp.jpg"),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  name ?? "",
+                  style: GoogleFonts.montserrat(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  email ?? "",
+                  style: GoogleFonts.montserrat(
+                      color: Colors.white70, fontSize: 14),
+                ),
+              ],
+            ),
           ),
           ListTile(
-            onTap: () {
-              //Navigator.pushNamed(context, "/movies");
-            },
-            title: const Text("Perfil"),
-            //subtitle: const Text("lorem ipsum"),
             leading: const Icon(Icons.person),
-            trailing: const Icon(Icons.arrow_forward_ios_sharp),
+            title: const Text("Perfil"),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+            onTap: () {},
           ),
-          // ListTile(
-          //   onTap: () {
-          //     //Navigator.pushNamed(context, "/preferences_drawer");
-          //   },
-          //   title: const Text("Preferencias"),
-          //   subtitle: const Text("Tema / Fuente"),
-          //   leading: const Icon(Icons.room_preferences),
-          //   trailing: const Icon(Icons.arrow_forward_ios_sharp),
-          // ),
           ListTile(
-            onTap: () {
-              //Navigator.pushNamed(context, "/settings_drawer");
-            },
+            leading: const Icon(Icons.info),
             title: const Text("Acerca de"),
             subtitle: const Text("Versión 1.0.2"),
-            leading: const Icon(Icons.info),
-            trailing: const Icon(Icons.arrow_forward_ios_sharp),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
           ),
-          const Padding(
-              padding: EdgeInsets.all(8),
-              child: Divider(
-                height: 2,
-              )),
+          const Divider(),
           ListTile(
-            onTap: () async {
-              Navigator.of(context).pop(); // Cierra el Drawer primero
-              await Future.delayed(const Duration(milliseconds: 200));
-              AuthService().signout(context: context);
-            },
+            leading: const Icon(Icons.logout, color: Colors.red),
             title: const Text("Cerrar sesión"),
-            //subtitle: const Text("Tema / Fuente"),
-            leading: const Icon(Icons.logout),
-            trailing: const Icon(Icons.arrow_forward_ios_sharp),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 16),
+            onTap: () {
+              Navigator.pop(context);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                AuthService().signout(context: context);
+              });
+            },
           ),
         ],
       ),
     );
+  }
+
+  Future<void> confirmDelete(BuildContext context, String docId) async {
+    final confirmar = await showDialog<bool>(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text("Eliminar reporte"),
+        content: const Text("Esta acción no se puede deshacer."),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text("Cancelar")),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context, false);
+              try {
+                await FirebaseFirestore.instance
+                    .collection('reportes')
+                    .doc(docId)
+                    .delete();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Reporte eliminado correctamente')),
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Error al eliminar el reporte')),
+                );
+              }
+            },
+            child: const Text("Eliminar"),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmar == true) {
+      await FirebaseFirestore.instance
+          .collection('reportes')
+          .doc(docId)
+          .delete();
+    }
   }
 }
