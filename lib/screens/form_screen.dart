@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../main.dart';
 import 'map_select_screen.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -103,7 +104,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   }
 
   Future<List<String>> subirImagenes(String reporteId) async {
-    FirebaseStorage storage = FirebaseStorage.instance;
+    final storage = FirebaseStorage.instanceFor(app: storageApp!);
+
     List<String> urls = [];
 
     for (int i = 0; i < imagenes.length; i++) {
