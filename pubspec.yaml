@@ -76,19 +76,7 @@ flutter:
   assets:
     - assets/
   #   - images/a_dot_ham.jpeg
-  fonts:
-    - family: NexaDemo
-      fonts:
-        - asset: assets/fonts/NexaDemo-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/NexaDemo-Light.ttf
-          weight: 300
-    - family: NexaTextDemo
-      fonts:
-        - asset: assets/fonts/NexaTextDemo-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/NexaTextDemo-Light.ttf
-          weight: 300
+
 flutter_launcher_icons:
   image_path: 'assets\bomber.png'
   android: true
