@@ -317,7 +317,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 onPressed: () async {
                   final resultado = await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const MapaSeleccionScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const MapaSeleccionScreen()),
                   );
 
                   if (resultado != null) {
@@ -895,8 +896,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               ),
               const SizedBox(height: 20),
 
-              Text("Imágenes",
-                  style: Theme.of(context).textTheme.titleLarge),
+              Text("Imágenes", style: Theme.of(context).textTheme.titleLarge),
               // Lista dinámica de imágenes
               Wrap(
                 spacing: 10,
@@ -949,7 +949,6 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   ),
                 ],
               ),
-
 
               // Botón Guardar Reporte
               Center(
@@ -1030,21 +1029,13 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       // }
 
                       try {
-                        // 1️⃣ Crear documento vacío para obtener ID
                         final docRef = FirebaseFirestore.instance
                             .collection('reportes')
                             .doc();
-
                         final reporteId = docRef.id;
-
-                        // 2️⃣ Subir imágenes usando ese ID
                         List<String> imagenesUrls =
                             await subirImagenes(reporteId);
-
-                        // 3️⃣ Agregar URLs al mapa de datos
                         reporteData['imagenes'] = imagenesUrls;
-
-                        // 4️⃣ Guardar documento completo
                         await docRef.set(reporteData);
 
                         ScaffoldMessenger.of(context).showSnackBar(
