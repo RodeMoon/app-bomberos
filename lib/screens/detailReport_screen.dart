@@ -275,6 +275,41 @@ class _DetailReportScreenState extends State<DetailReportScreen> {
           const Text('Estado', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           buildInfoTile(Icons.cancel, 'Cancelado', data['cancelado'] == true ? 'Sí' : 'No'),
           buildInfoTile(Icons.warning_amber, 'Falsa alarma', data['falsa_alarma'] == true ? 'Sí' : 'No'),
+
+          const SizedBox(height: 20),
+
+          // 🔹 MOSTRAR IMÁGENES
+          if (data['imagenes'] != null && data['imagenes'] is List)
+            ...[
+              const Text('Imágenes del reporte',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: (data['imagenes'] as List).length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemBuilder: (_, index) {
+                  final url = data['imagenes'][index];
+                  return GestureDetector(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) => Dialog(
+                        child: InteractiveViewer(child: Image.network(url)),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(url, fit: BoxFit.cover),
+                    ),
+                  );
+                },
+              ),
+            ],
         ],
       ),
     );
