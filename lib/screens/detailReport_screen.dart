@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'editReport_screen.dart';
-import 'package:proyecto_integrador_bomberos/utils/role_helper.dart'; // <- NUEVO
 
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
