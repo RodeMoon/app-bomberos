@@ -15,6 +15,18 @@
 
 ---
 
+## Capturas de pantalla de la aplicación
+
+![Pantalla de Login](./assets/screenshots/1.jpeg)
+![Panel de control](./assets/screenshots/2.jpeg)
+![Filtro para la búsqueda de reportes](./assets/screenshots/8.jpeg)
+![Dashboard](./assets/screenshots/3.jpeg)
+![Estructura del formulario](./assets/screenshots/4.jpeg)
+![Geolocación con Google Maps](./assets/screenshots/6.jpeg)
+
+
+---
+
 ## Tecnologías utilizadas
 
 * **Frontend / Mobile:** [Flutter](https://flutter.dev/) & [Dart](https://dart.dev/) (Desarrollo multiplataforma nativo).
