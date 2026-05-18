@@ -17,13 +17,17 @@
 
 ## Capturas de pantalla de la aplicación
 
-![Pantalla de Login](./assets/screenshots/1.jpeg)
-![Panel de control](./assets/screenshots/2.jpeg)
-![Filtro para la búsqueda de reportes](./assets/screenshots/8.jpeg)
-![Dashboard](./assets/screenshots/3.jpeg)
-![Estructura del formulario](./assets/screenshots/4.jpeg)
-![Geolocación con Google Maps](./assets/screenshots/6.jpeg)
+A continuación se muestran algunas secciones clave de la interfaz de usuario, organizadas en un flujo lógico desde el acceso hasta la gestión de reportes:
 
+<p align="center">
+  <img src="./assets/screenshots/1.jpeg" width="260" alt="Pantalla de Login" style="margin: 10px; border-radius: 10px; border: 1px solid #ddd">
+  <img src="./assets/screenshots/2.jpeg" width="260" alt="Panel de control" style="margin: 10px; border-radius: 10px; border: 1px solid #ddd">
+  <img src="./assets/screenshots/8.jpeg" width="260" alt="Filtro para la búsqueda" style="margin: 10px; border-radius: 10px; border: 1px solid #ddd">
+  <br>
+  <img src="./assets/screenshots/3.jpeg" width="260" alt="Dashboard" style="margin: 10px; border-radius: 10px; border: 1px solid #ddd">
+  <img src="./assets/screenshots/4.jpg" width="260" alt="Estructura del formulario" style="margin: 10px; border-radius: 10px; border: 1px solid #ddd">
+  <img src="./assets/screenshots/6.jpg" width="260" alt="Geolocación con Google Maps" style="margin: 10px; border-radius: 10px; border: 1px solid #ddd">
+</p>
 
 ---
 
